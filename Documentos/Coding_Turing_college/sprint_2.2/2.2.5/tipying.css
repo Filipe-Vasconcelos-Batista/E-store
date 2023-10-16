@@ -1,0 +1,15 @@
+.inputWrapper{
+    position:relative;
+}
+.input, .coloredText{
+    position:absolute;
+    top: 10px;;
+    left:40%;
+    width:20%;
+    height:30px;
+    padding: 10px;
+}
+.input{
+    background-color:transparent;
+    color:transparent;
+}
