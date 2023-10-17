@@ -13,3 +13,22 @@
     background-color:transparent;
     color:transparent;
 }
+.wordContainer{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.word{
+    transition:all 2s ease-in-out;
+    margin:0 10px
+}
+.word1 .word5{
+    opacity:0.2;
+}
+.word2 .word4{
+    opacity: 0.6;
+}
+.word3{
+    opacity:1;
+    font-size: 1.5em;
+}
