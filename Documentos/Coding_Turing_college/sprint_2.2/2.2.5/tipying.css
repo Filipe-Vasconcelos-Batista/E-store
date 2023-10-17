@@ -8,6 +8,7 @@
     width:20%;
     height:30px;
     padding: 10px;
+    font-weight: bold;
 }
 .input{
     background-color:transparent;
@@ -23,10 +24,12 @@
     margin:0 10px
 }
 .word1 .word5{
-    opacity:0.2;
+    opacity:0.1;
+    font-size: 0.2em;
 }
 .word2 .word4{
     opacity: 0.6;
+    font-size: 1em;
 }
 .word3{
     opacity:1;

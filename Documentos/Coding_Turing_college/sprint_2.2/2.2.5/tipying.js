@@ -76,3 +76,34 @@ document.getElementsByClassName("input")[0].addEventListener("input", (event)=>{
         updateWords()
         }
 })
+
+/**Sure, I can help with that. Here’s how you can calculate the typing speed (Words Per Minute) and word accuracy:
+
+    Typing Speed (WPM): Words per minute (WPM) is a measure of typing speed, commonly used in recruitment. For the purposes of WPM measurement, a word is standardized to five characters or keystrokes. So, to calculate WPM:
+        Count all typed entries (every 5 characters/keystrokes count as a word)
+        Divide by 5 to get the number of words typed
+        Divide the number of words by the total time taken in minutes
+
+    Here’s how you can do it in JavaScript:
+    let totalEntries = userInput.length; // total characters typed by the user
+let timeTaken = totalTime / 60; // total time taken in minutes
+let wpm = (totalEntries / 5) / timeTaken; // calculate words per minute
+
+
+
+Word Accuracy (%): Word accuracy is the percentage of words that were typed correctly. To calculate word accuracy:
+
+    Count the number of correct words
+    Divide by the total number of words typed
+    Multiply by 100 to get the percentage
+
+Here’s how you can do it in JavaScript:
+
+let correctWordsCount = correctWords.length; // number of correct words
+let totalWordsCount = typedWords.length; // total number of words typed
+let accuracy = (correctWordsCount / totalWordsCount) * 100; // calculate accuracy in percentage
+
+Remember to handle cases where totalTime or totalWordsCount could be zero to avoid division by zero errors.
+
+I hope this helps! Let me know if you have any other questions. 😊
+*/
