@@ -26,8 +26,13 @@ async function displayPoem(){
     //display the poem information
     let [title,author,poem]= await getRandomPoem();
     poem = poem.replace(/\n/g, " ");
-    poemWords=poem.split(" ");
-    updateWords()
+    let oldPoemWords=poem.split(" ").filter(word => word !== "");
+    poemWords=[...poemWords, ...oldPoemWords];
+    if (poemWords.length <60){
+        await displayPoem();
+    }else {
+        updateWords()
+    }
 }
 
 function updateWords(){
@@ -55,7 +60,15 @@ document.getElementsByClassName("input")[0].addEventListener("input", (event)=>{
     if(!countDownStarted && userInput.length>0){
         countDownStarted=true;
         setTimeout(()=>{
-            alert(`You spelled ${correctWords.length} words correctely`);
+            let totalWords= typedWords.length;
+            let wpm=(totalWords/5);
+            let accuracy=(correctWords.length/typedWords.length)*100;
+            saveData(wpm,accuracy)
+            let comparisonMessage= compareResults()
+            alert(`You spelled ${correctWords.length} words correctely at a speed of ${wpm}WPM with an accuracy of ${accuracy.toFixed(2)}%.`);
+            if (comparisonMessage !== '') {
+                alertMessage += ` ${comparisonMessage}`;
+            }
             location.reload()
             document.getElementsByClassName("input")[0].value= "";
             document.getElementsByClassName("coloredText")[0].innerHTML="";
@@ -76,3 +89,24 @@ document.getElementsByClassName("input")[0].addEventListener("input", (event)=>{
         updateWords()
         }
 })
+
+const saveData= (wpm, accuracy)=>{
+    let results =JSON.parse(localStorage.getItem("typingTestResults"))||[];
+    results.push({wpm,accuracy});
+    localStorage.setItem("typingTestResults",JSON.stringify(results));
+}
+const compareResults=()=>{
+    let results= JSON.parse(localStorage.getItem("typingTestResults")) || [];
+    if (results.length > 1){
+        let lastResult = results[results.length -1];
+        let secondLastResult=results[results.length -2];
+
+        if(lastResult.wpm > secondLastResult.wpm && lastResult.accuracy> secondLastResult.accuracy){
+            return `Great Job! Last time you only had a WPM score of ${secondLastResult.wpm} and an accuracy of ${secondLastResult.accuracy.toFixed(2)}%.`;
+        }else if(lastResult.wpm < secondLastResult.wpm && lastResult.accuracy < secondLastResult.accuracy){
+            return `Keep practicing! Last time you had a WPM score of ${secondLastResult.wpm} and an accuracy of ${secondLastResult.accuracy.toFixed(2)}%.`;
+        }else{
+            return `Getting better buddy! Last time you had a WPM score of ${secondLastResult.wpm} and an accuracy of ${secondLastResult.accuracy.toFixed(2)}%.`;
+        }
+    }
+}
