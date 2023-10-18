@@ -26,8 +26,13 @@ async function displayPoem(){
     //display the poem information
     let [title,author,poem]= await getRandomPoem();
     poem = poem.replace(/\n/g, " ");
-    poemWords=poem.split(" ");
-    updateWords()
+    let oldPoemWords=poem.split(" ").filter(word => word !== "");
+    poemWords=[...poemWords, ...oldPoemWords];
+    if (poemWords.length <60){
+        await displayPoem();
+    }else {
+        updateWords()
+    }
 }
 
 function updateWords(){
@@ -55,7 +60,15 @@ document.getElementsByClassName("input")[0].addEventListener("input", (event)=>{
     if(!countDownStarted && userInput.length>0){
         countDownStarted=true;
         setTimeout(()=>{
-            alert(`You spelled ${correctWords.length} words correctely`);
+            let totalWords= typedWords.length;
+            let wpm=(totalWords/5);
+            let accuracy=(correctWords.length/typedWords.length)*100;
+            saveData(wpm,accuracy)
+            let comparisonMessage= compareResults()
+            alert(`You spelled ${correctWords.length} words correctely at a speed of ${wpm}WPM with an accuracy of ${accuracy.toFixed(2)}%.`);
+            if (comparisonMessage !== '') {
+                alertMessage += ` ${comparisonMessage}`;
+            }
             location.reload()
             document.getElementsByClassName("input")[0].value= "";
             document.getElementsByClassName("coloredText")[0].innerHTML="";
@@ -77,33 +90,23 @@ document.getElementsByClassName("input")[0].addEventListener("input", (event)=>{
         }
 })
 
-/**Sure, I can help with that. Here’s how you can calculate the typing speed (Words Per Minute) and word accuracy:
+const saveData= (wpm, accuracy)=>{
+    let results =JSON.parse(localStorage.getItem("typingTestResults"))||[];
+    results.push({wpm,accuracy});
+    localStorage.setItem("typingTestResults",JSON.stringify(results));
+}
+const compareResults=()=>{
+    let results= JSON.parse(localStorage.getItem("typingTestResults")) || [];
+    if (results.length > 1){
+        let lastResult = results[results.length -1];
+        let secondLastResult=results[results.length -2];
 
-    Typing Speed (WPM): Words per minute (WPM) is a measure of typing speed, commonly used in recruitment. For the purposes of WPM measurement, a word is standardized to five characters or keystrokes. So, to calculate WPM:
-        Count all typed entries (every 5 characters/keystrokes count as a word)
-        Divide by 5 to get the number of words typed
-        Divide the number of words by the total time taken in minutes
-
-    Here’s how you can do it in JavaScript:
-    let totalEntries = userInput.length; // total characters typed by the user
-let timeTaken = totalTime / 60; // total time taken in minutes
-let wpm = (totalEntries / 5) / timeTaken; // calculate words per minute
-
-
-
-Word Accuracy (%): Word accuracy is the percentage of words that were typed correctly. To calculate word accuracy:
-
-    Count the number of correct words
-    Divide by the total number of words typed
-    Multiply by 100 to get the percentage
-
-Here’s how you can do it in JavaScript:
-
-let correctWordsCount = correctWords.length; // number of correct words
-let totalWordsCount = typedWords.length; // total number of words typed
-let accuracy = (correctWordsCount / totalWordsCount) * 100; // calculate accuracy in percentage
-
-Remember to handle cases where totalTime or totalWordsCount could be zero to avoid division by zero errors.
-
-I hope this helps! Let me know if you have any other questions. 😊
-*/
+        if(lastResult.wpm > secondLastResult.wpm && lastResult.accuracy> secondLastResult.accuracy){
+            return `Great Job! Last time you only had a WPM score of ${secondLastResult.wpm} and an accuracy of ${secondLastResult.accuracy.toFixed(2)}%.`;
+        }else if(lastResult.wpm < secondLastResult.wpm && lastResult.accuracy < secondLastResult.accuracy){
+            return `Keep practicing! Last time you had a WPM score of ${secondLastResult.wpm} and an accuracy of ${secondLastResult.accuracy.toFixed(2)}%.`;
+        }else{
+            return `Getting better buddy! Last time you had a WPM score of ${secondLastResult.wpm} and an accuracy of ${secondLastResult.accuracy.toFixed(2)}%.`;
+        }
+    }
+}
