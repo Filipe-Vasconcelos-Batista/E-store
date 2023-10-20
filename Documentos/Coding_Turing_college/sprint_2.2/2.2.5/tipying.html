@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>TypeStorm</title>
-    <link rel="stylesheet" href="tipying.css"type="text/css" />
+    <link rel="stylesheet" href="tipying.css" type="text/css">
+    <script type="module" src="tipying.mjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header class="header">
@@ -42,7 +43,7 @@
             <textarea id="myInput" class="input" rows="1"></textarea>
         </div>
         <div class="label-container">
-            <label for="myInput" class="input-label">Start tipying to start the test</label>
+            <label for="myInput" class="input-label">Start typing to start the test</label>
         </div>
         <div class="data">
             <div class="countdown">60</div>
@@ -50,16 +51,15 @@
             <div class="accuracy">Accuracy: 0.00%</div>
         </div>
     </div>
-    <div class="results" id="results">
+    <div class="results">
         <div>
-        <h1 class="title">Your Results</h1>
+            <h1 class="title">Your Results</h1>
+        </div>
+        <div class="chart-container">
+            <canvas class="chart"></canvas>
+        </div>
+            <div class="results-table" id="results">
         </div>
     </div>
-    <div class="results">
-        <canvas class="chart"></canvas>
-    </div>
-</div>
 </body>
-<script type="module" src="tipying.mjs"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </html>

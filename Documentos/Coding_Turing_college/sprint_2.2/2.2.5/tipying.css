@@ -76,9 +76,20 @@ h6{
     display:flex;
     flex-direction: row;
     justify-content: end;
-    flex-shrink: auto;
     justify-content: space-evenly;
     width:30%;
+}
+.before .word1{
+    flex-shrink: 2;
+}
+.before .word2{
+    flex-shrink: 1;
+}
+.next .word4{
+    flex-shrink: 1;
+}
+.next .word5{
+    flex-shrink: 2;
 }
 a {
     text-decoration: none;
@@ -171,7 +182,9 @@ a :hover{
 .word1{
     display: none;
 }
-
+.chart-container{
+    display: none;
+}
 .results{
     margin: 5% 0 0 0;
 }
