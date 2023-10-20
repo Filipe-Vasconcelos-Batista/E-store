@@ -1,4 +1,5 @@
-import { getRandomPoem, displayPoem, colorInput, startCountdown, handleSpace, saveData, compareResults } from './functions.mjs';
+import { displayCharts, createCharts, getRandomPoem, displayPoem, colorInput, startCountdown, handleSpace, saveData, compareResults } from './functions.mjs';
+let results = JSON.parse(localStorage.getItem('typingTestResults')) || [];
 let displayer=document.getElementsByClassName("display")[0]
 let countDownStarted=false;
 let poemWords=[];
@@ -21,3 +22,6 @@ document.getElementsByClassName("input")[0].addEventListener("input", (event) =>
 
     handleSpace(userInput, poemWords,correctWords,typedWords);
 });
+
+displayCharts(results);
+createCharts(results);

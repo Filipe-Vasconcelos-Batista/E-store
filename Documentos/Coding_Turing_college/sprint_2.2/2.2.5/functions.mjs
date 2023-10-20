@@ -1,8 +1,3 @@
-const displayer=document.getElementsByClassName("display")[0];
-let poemWords = [];
-let correctWords = [];
-let typedWords = [];
-let countDownStarted = false;
 export async function getRandomPoem() {
     //get the poem from the api
     try {
@@ -125,13 +120,15 @@ export function compareResults(correctWords,typedWords) {
     }
 }
 
-export function displayCharts(results) {
-    /**display the chart */
-    let resultsDiv = document.getElementsByClassName('results')[0];
-    results.forEach((result, index) => {
-        resultsDiv.innerHTML += `<p>Game ${index + 1}: ${result.wpm} WPM, ${result.accuracy.toFixed(2)}% accuracy</p>`;
-    });
-}
+
+    export function displayCharts(results) {
+            /**display the chart */
+        let resultsDiv = document.getElementsByClassName('results')[0];
+        results.forEach((result, index) => {
+            let accuracy = result.accuracy !== null ? result.accuracy.toFixed(2) : 'N/A';
+            resultsDiv.innerHTML += `<p>Game ${index + 1}: ${result.wpm} WPM, ${accuracy}% accuracy</p>`;
+        });
+    }
 
 export function createCharts(results) {
     /**create the chart */
