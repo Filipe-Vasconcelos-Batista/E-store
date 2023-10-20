@@ -3,23 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Typing Test</title>
+
+    <title>TypeStorm</title>
     <link rel="stylesheet" href="tipying.css"type="text/css" />
 </head>
 <body>
-    <div class="wordContainer">
-        <div class="word word1"></div>
-        <div class="word word2"></div>
-        <div class="word word3 display"></div>
-        <div class="word word4"></div>
-        <div class="word word5"></div>
+    <header class="header">
+            <div class="first">
+                <h6>Welcome to TypeStorm</h6>
+            </div>
+            <div class="second">
+                <a href="#results">
+                    <h6>Results</h6>
+                </a>
+            </div>
+            <div class="last">
+                <a href="#test">
+                    <h6>Test</h6>
+                </a>
+            </div>
+    </header>
+    <div class="test" id="test">
+        <div class="wordContainer">
+        <div class="before">
+            <div class="word word1"></div>
+            <div class="word word2"></div>
+        </div>
+        <div class="actual">
+            <div class="word word3 display"></div>
+        </div>
+        <div class="next">
+            <div class="word word4"></div>
+            <div class="word word5"></div>
+        </div>
+        </div>
+        <div class="inputWrapper">
+            <div class="coloredText"></div>
+            <textarea id="myInput" class="input" rows="1"></textarea>
+        </div>
+        <div class="label-container">
+            <label for="myInput" class="input-label">Start tipying to start the test</label>
+        </div>
+        <div class="data">
+            <div class="countdown">60</div>
+            <div class="wpm">WPM: 0</div>
+            <div class="accuracy">Accuracy: 0.00%</div>
+        </div>
     </div>
-    <div class="inputWrapper">
-        <div class="coloredText"></div>
-        <textarea class="input" rows="1"></textarea>
+    <div class="results" id="results">
+        <div>
+        <h1 class="title">Your Results</h1>
+        </div>
     </div>
-    <div></div>
-    <div> <button onclick="window.location.href='results.html'">Results</button></div>
+    <div class="results">
+        <canvas class="chart"></canvas>
+    </div>
+</div>
 </body>
-<script src="tipying.js"></script>
+<script type="module" src="tipying.mjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </html>
