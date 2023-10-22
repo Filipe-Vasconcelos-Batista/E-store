@@ -6,37 +6,51 @@ import {
   colorInput,
   startCountdown,
   handleSpace,
-  saveData,
-  compareResults,
+  resetTest,
+  restartTest,
 } from "./functions.mjs";
-let results = JSON.parse(localStorage.getItem("typingTestResults")) || [];
-let displayer = document.getElementsByClassName("display")[0];
-let countDownStarted = false;
-let poemWords = [];
-let correctWords = [];
-let typedWords = [];
+let state = {
+  results: JSON.parse(localStorage.getItem("typingTestResults")) || [],
+  displayer: document.getElementsByClassName("display")[0],
+  countDownStarted: false,
+  poemWords: [],
+  correctWords: [],
+  typedWords: [],
+  resetPoem: [],
+  countdownInterval: null
+};
 
-getRandomPoem();
-displayPoem(poemWords);
-
-document
-  .getElementsByClassName("input")[0]
-  .addEventListener("input", (event) => {
-    const userInput = event.target.value;
-    const poem = displayer.innerText;
-
-    document.getElementsByClassName("coloredText")[0].innerHTML = colorInput(
-      userInput,
-      poem
-    );
-
-    if (!countDownStarted && userInput.length > 0) {
-      countDownStarted = true;
-      startCountdown(typedWords, correctWords, countDownStarted);
-    }
-
-    handleSpace(userInput, poemWords, correctWords, typedWords);
+document.addEventListener("DOMContentLoaded", async function() {
+  await displayPoem(state);
+  
+  document
+    .getElementsByClassName("input")[0]
+    .addEventListener("input", (event) => {
+      const userInput = event.target.value;
+      const poem = state.displayer.innerText;
+  
+      document.getElementsByClassName("coloredText")[0].innerHTML = colorInput(
+        userInput,
+        poem
+      );
+  
+      if (!state.countDownStarted && userInput.length > 0) {
+        state.countDownStarted = true;
+        startCountdown(state);
+      }
+  
+      handleSpace(userInput, state);
+    });
+    
+  document.getElementsByClassName("input")[0].addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        // Call your reset function here
+        resetTest(state);
+      }else if(event.key === 'Enter'){
+        restartTest(state)
+      }
   });
-
-displayCharts(results);
-createCharts(results);
+  
+  displayCharts(state);
+  createCharts(state);
+});

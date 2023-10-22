@@ -14,26 +14,31 @@ export async function getRandomPoem() {
   }
 }
 
-export async function displayPoem(poemWords) {
+export async function displayPoem(state) {
   //display the poem information
   let [title, author, poem] = await getRandomPoem();
   poem = poem.replace(/\n/g, " ");
   let oldPoemWords = poem.split(" ").filter((word) => word !== "");
-  poemWords.push(...oldPoemWords);
-  if (poemWords.length < 60) {
-    await displayPoem(poemWords);
+  state.poemWords.push(...oldPoemWords);
+  state.resetPoem = [...state.poemWords];
+  if (state.poemWords.length < 60) {
+    await displayPoem(state);
   } else {
-    updateWords(poemWords);
+    updateWords(state);
   }
 }
-export function updateWords(poemWords, typedWords = []) {
+
+export function updateWords(state) {
   document.getElementsByClassName("word1")[0].innerHTML =
-    typedWords[typedWords.length - 2] || "";
+    state.typedWords[state.typedWords.length - 2] || "";
   document.getElementsByClassName("word2")[0].innerHTML =
-    typedWords[typedWords.length - 1] || "";
-  document.getElementsByClassName("word3")[0].innerHTML = poemWords[0] || "";
-  document.getElementsByClassName("word4")[0].innerHTML = poemWords[1] || "";
-  document.getElementsByClassName("word5")[0].innerHTML = poemWords[2] || "";
+    state.typedWords[state.typedWords.length - 1] || "";
+  document.getElementsByClassName("word3")[0].innerHTML =
+    state.poemWords[0] || "";
+  document.getElementsByClassName("word4")[0].innerHTML =
+    state.poemWords[1] || "";
+  document.getElementsByClassName("word5")[0].innerHTML =
+    state.poemWords[2] || "";
 }
 
 export function colorInput(userInput, poem) {
@@ -51,28 +56,31 @@ export function colorInput(userInput, poem) {
   return coloredInput;
 }
 
-export function startCountdown(typedWords, correctWords, countDownStarted) {
+export function startCountdown(state) {
   // Update the countdown every second
   let countdownElement = document.getElementsByClassName("countdown")[0]; // Get the countdown element
   let timeLeft = 60;
-  let countdownInterval = setInterval(() => {
+  state.countdownInterval = setInterval(() => {
     timeLeft--;
     countdownElement.innerText = timeLeft;
 
-    let totalCharacters = correctWords.join(" ").length;
+    let totalCharacters = state.correctWords.join(" ").length;
     let wpm = totalCharacters / 5;
-    let accuracy = (correctWords.length / typedWords.length) * 100;
+    let accuracy = (state.correctWords.length / state.typedWords.length) * 100;
     let wpmElement = document.getElementsByClassName("wpm")[0];
     let accuracyElement = document.getElementsByClassName("accuracy")[0];
     wpmElement.innerText = `WPM: ${wpm}`;
     accuracyElement.innerText = `Accuracy: ${accuracy.toFixed(2)}%`;
 
     if (timeLeft <= 0) {
-      clearInterval(countdownInterval);
+      clearInterval(state.countdownInterval);
       saveData(wpm, accuracy);
-      let comparisonMessage = compareResults(correctWords, typedWords);
+      let comparisonMessage = compareResults(
+        state.correctWords,
+        state.typedWords
+      );
       let alertMessage = `You spelled ${
-        correctWords.length
+        state.correctWords.length
       } words correctly at a speed of ${wpm}WPM with an accuracy of ${accuracy.toFixed(
         2
       )}%.`;
@@ -80,38 +88,37 @@ export function startCountdown(typedWords, correctWords, countDownStarted) {
         alertMessage += ` ${comparisonMessage}`;
       }
       alert(alertMessage);
-      location.reload();
-      document.getElementsByClassName("input")[0].value = "";
-      document.getElementsByClassName("coloredText")[0].innerHTML = "";
-      correctWords = [];
-      countDownStarted = false;
+      resetTest(state);
     }
   }, 1000);
 }
 
-export function handleSpace(userInput, poemWords, correctWords, typedWords) {
+export function handleSpace(userInput, state) {
   /**erase the white spaces */
   if (userInput[userInput.length - 1] === " ") {
     const lastWordTyped = userInput.trim();
-    const correspondingPoemWords = poemWords.shift();
+    const correspondingPoemWords = state.poemWords.shift();
     if (lastWordTyped === correspondingPoemWords) {
-      correctWords.push(lastWordTyped);
+      state.correctWords.push(lastWordTyped);
     }
-    typedWords.push(correspondingPoemWords);
+    state.typedWords.push(correspondingPoemWords);
     document.getElementsByClassName("input")[0].value = "";
     document.getElementsByClassName("coloredText")[0].innerHTML = "";
-    updateWords(poemWords, typedWords);
+    updateWords(state);
   }
 }
 
 export function saveData(wpm, accuracy) {
   /**save the data in the user machine */
   let results = JSON.parse(localStorage.getItem("typingTestResults")) || [];
-  results.push({ wpm, accuracy });
+  if (accuracy === null) {
+    accuracy = 0;
+  }
+  results.push({ wpm: wpm, accuracy: accuracy });
   localStorage.setItem("typingTestResults", JSON.stringify(results));
 }
 
-export function compareResults(correctWords, typedWords) {
+export function compareResults(state) {
   /** compare the results of the various games */
   let results = JSON.parse(localStorage.getItem("typingTestResults")) || [];
   if (results.length > 1) {
@@ -140,10 +147,10 @@ export function compareResults(correctWords, typedWords) {
   }
 }
 
-export function displayCharts(results) {
+export function displayCharts(state) {
   /**display the chart */
   let resultsDiv = document.getElementsByClassName("results-table")[0];
-  results.forEach((result, index) => {
+  state.results.forEach((result, index) => {
     let accuracy =
       result.accuracy !== null ? result.accuracy.toFixed(2) : "N/A";
     resultsDiv.innerHTML += `<p>Game ${index + 1}: ${
@@ -152,23 +159,23 @@ export function displayCharts(results) {
   });
 }
 
-export function createCharts(results) {
+export function createCharts(state) {
   /**create the chart */
   let ctx = document.getElementsByClassName("chart")[0].getContext("2d");
   let chart = new Chart(ctx, {
     type: "line",
     data: {
-      labels: results.map((_, index) => `Game ${index + 1}`),
+      labels: state.results.map((_, index) => `Game ${index + 1}`),
       datasets: [
         {
           label: "WPM",
-          data: results.map((result) => result.wpm),
+          data: state.results.map((result) => result.wpm),
           borderColor: "rgb(75, 192, 192)",
           fill: false,
         },
         {
           label: "Accuracy",
-          data: results.map((result) => result.accuracy),
+          data: state.results.map((result) => result.accuracy),
           borderColor: "rgb(255, 99, 132)",
           fill: false,
         },
@@ -182,4 +189,33 @@ export function createCharts(results) {
       },
     },
   });
+}
+
+export async function resetTest(state) {
+  //reset the game
+  document.getElementsByClassName("input")[0].value = "";
+  document.getElementsByClassName("coloredText")[0].innerHTML = "";
+  clearInterval(state.countdownInterval);
+  document.getElementsByClassName("countdown")[0].innerText = 60;
+  state.countDownStarted = false;
+  state.poemWords.length = 0;
+  state.correctWords.length = 0;
+  state.typedWords.length = 0;
+  state.resetPoem.length = 0;
+  displayPoem(state)
+}
+
+export async function restartTest(state) {
+  // restart
+  document.getElementsByClassName("input")[0].value = "";
+  document.getElementsByClassName("coloredText")[0].innerHTML = "";
+  clearInterval(state.countdownInterval);
+  document.getElementsByClassName("countdown")[0].innerText = 60;
+  state.countDownStarted = false;
+  state.poemWords = [...state.resetPoem];
+  state.correctWords.length = 0;
+  state.typedWords.length = 0;
+  updateWords(state);
+  state.countDownStarted = true;
+  startCountdown(state);
 }
