@@ -1,8 +1,8 @@
-import { validates } from '../utils/validation'
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { z } from 'zod'
+import { validates } from '../utils/validation'
 import Cart from './shoppingCart'
-import BoughtProducts from './boughtProducts'
+import Order from './order'
 
 @Entity()
 export default class User {
@@ -24,11 +24,11 @@ export default class User {
   @OneToMany(() => Cart, (cart) => cart.user)
   carts: Cart[]
 
-  @OneToMany(() => BoughtProducts, (boughtProducts) => boughtProducts.user)
-  boughtProducts: BoughtProducts[]
+  @OneToMany(() => Order, (order) => order.user)
+  order: Order[]
 }
 
-export type UserBare = Omit<User, 'carts' | 'boughtProducts'>
+export type UserBare = Omit<User, 'carts' | 'order'>
 
 export const userSchema = validates<UserBare>().with({
   id: z.number().int().positive(),
