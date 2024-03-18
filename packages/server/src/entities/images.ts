@@ -1,4 +1,4 @@
-import { validates } from '../../utils/validation'
+import { validates } from '../utils/validation'
 import {
   Column,
   Entity,
