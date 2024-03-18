@@ -1,6 +1,6 @@
-import { validates } from '../utils/validation'
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { z } from 'zod'
+import { validates } from '../utils/validation'
 import Product from './product'
 
 @Entity()

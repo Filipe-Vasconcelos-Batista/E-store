@@ -1,4 +1,3 @@
-import { validates } from '../utils/validation'
 import {
   Column,
   Entity,
@@ -8,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm'
 import { z } from 'zod'
+import { validates } from '../utils/validation'
 import Category from './category'
 import Images from './images'
 
