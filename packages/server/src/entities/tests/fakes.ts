@@ -59,6 +59,7 @@ export const fakeProduct = <T extends Partial<ProductInsert>>(
 export const fakeUser = <T extends Partial<UserInsert>>(
   overrides: T = {} as T
 ) => ({
+  id: randomId(),
   email: random.email(),
   username: random.string(),
   passwordHash: random.guid(),

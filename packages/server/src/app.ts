@@ -5,7 +5,7 @@ import {
 } from '@trpc/server/adapters/express'
 import cors from 'cors'
 import type { Database } from './database'
-import { appRouter } from './modules'
+//import { appRouter } from './modules'
 import type { Context } from './trpc'
 
 export default function createApp(db: Database) {
@@ -22,6 +22,7 @@ export default function createApp(db: Database) {
 
   // Using TRPC router, which will live under /v1/trpc
   // path. It will be used for all our procedures.
+  /*
   app.use(
     '/v1/trpc',
     createExpressMiddleware({
@@ -38,6 +39,6 @@ export default function createApp(db: Database) {
       router: appRouter,
     })
   )
-
+*/
   return app
 }
