@@ -27,6 +27,7 @@ export default publicProcedure
       return {
         id: user.id,
         username: user.username,
+        email: user.email,
       }
     } catch (error) {
       if (!(error instanceof Error)) {

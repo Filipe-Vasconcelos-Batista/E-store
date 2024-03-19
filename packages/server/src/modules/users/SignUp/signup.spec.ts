@@ -25,6 +25,7 @@ it('should save a user', async () => {
 
   expect(userCreated).toEqual({
     id: expect.any(Number),
+    username: user.username,
     email: user.email,
     password: expect.not.stringContaining(user.password),
   })
@@ -32,8 +33,9 @@ it('should save a user', async () => {
   expect(userCreated.password).toHaveLength(60)
 
   expect(response).toEqual({
-    id: expect.any(Number),
     email: user.email,
+    id: expect.any(Number),
+    username: user.username,
   })
 
   expect(response.id).toEqual(userCreated!.id)
