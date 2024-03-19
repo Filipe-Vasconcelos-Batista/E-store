@@ -17,6 +17,9 @@ export default class Images {
   @Column('integer')
   productId: number
 
+  @Column('boolean')
+  isThumbnail: boolean
+
   @ManyToOne(() => Product, (product) => product.images)
   @JoinColumn()
   product: Product
@@ -31,8 +34,10 @@ export const imagesSchema = validates<ImagesBare>().with({
   id: z.number().int().positive(),
   productId: z.number().int().positive(),
   link: z.string().url(),
+  isThumbnail: z.boolean(),
 })
 
 export const imagesInsertSchema = imagesSchema.omit({ id: true })
+export const imagesInsertArray = z.array(imagesInsertSchema)
 
 export type ImagesInsert = z.infer<typeof imagesInsertSchema>
