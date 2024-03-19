@@ -8,6 +8,7 @@ const tokenPayloadSchema = z.object({
   user: z.object({
     id: z.number(),
     authorization: z.string(),
+    password: z.string(),
   }),
 })
 
