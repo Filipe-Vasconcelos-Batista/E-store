@@ -62,7 +62,7 @@ export const fakeUser = <T extends Partial<UserInsert>>(
   id: randomId(),
   email: random.email(),
   username: random.string(),
-  passwordHash: random.guid(),
+  password: random.guid(),
   authorization: random.pick(['buyer', 'admin']),
   ...overrides,
 })

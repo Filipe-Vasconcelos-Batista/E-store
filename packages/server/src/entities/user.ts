@@ -9,14 +9,14 @@ export default class User {
   @PrimaryGeneratedColumn('increment')
   id: number
 
-  @Column('text')
+  @Column('text', { unique: true })
   email: string
 
-  @Column('text')
+  @Column('text', { unique: true })
   username: string
 
   @Column('text')
-  passwordHash: string
+  password: string
 
   @Column('text')
   authorization: string
@@ -34,7 +34,7 @@ export const userSchema = validates<UserBare>().with({
   id: z.number().int().positive(),
   email: z.string().trim().toLowerCase().email(),
   username: z.string(),
-  passwordHash: z.string().min(8).max(64),
+  password: z.string().min(8).max(64),
   authorization: z.enum(['buyer', 'admin']),
 })
 
