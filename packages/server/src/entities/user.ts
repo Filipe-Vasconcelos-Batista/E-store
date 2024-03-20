@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { z } from 'zod'
 import { validates } from '../utils/validation'
-import Cart from './shoppingCart'
+import Cart from './cart'
 import Order from './order'
 
 @Entity()

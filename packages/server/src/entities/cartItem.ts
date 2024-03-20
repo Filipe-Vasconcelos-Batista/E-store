@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm'
 import { z } from 'zod'
-import Cart from './shoppingCart'
+import Cart from './cart'
 import Product from './product'
 
 @Entity()
