@@ -4,7 +4,7 @@ import { ImagesInsert } from '@server/entities/images'
 import { OrderInsert } from '@server/entities/order'
 import { ProductInsert } from '@server/entities/product'
 import { UserInsert } from '@server/entities/user'
-import { CartInsert } from '@server/entities/shoppingCart'
+import { CartInsert } from '@server/entities/cart'
 import { random } from '@tests/utils/random'
 
 const randomId = () => random.integer({ min: 1, max: 2147483647 })
