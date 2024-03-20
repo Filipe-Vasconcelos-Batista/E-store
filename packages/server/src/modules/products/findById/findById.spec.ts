@@ -3,9 +3,10 @@ import {
   fakeCategory,
   fakeUserAdmin,
   fakeProduct,
+  fakeImages,
 } from '@server/entities/tests/fakes'
 import { createTestDatabase } from '@tests/utils/database'
-import { Category, Product, User } from '@server/entities'
+import { Category, Images, Product, User } from '@server/entities'
 import productRouter from '..'
 
 describe('check that the find by id works', async () => {
@@ -17,10 +18,30 @@ describe('check that the find by id works', async () => {
       categoryId: category.id,
     })
   )
+  await db.getRepository(Product).save(
+    fakeProduct({
+      categoryId: category.id,
+    })
+  )
   const { findById } = productRouter.createCaller(authContext({ db }, user))
-  it('should create a product', async () => {
+  it('should find a product throug the id', async () => {
     const found = await findById(product1.id)
-
     expect(found).toMatchObject(product1)
+  })
+  it('should return the images related to that product', async () => {
+    await db
+      .getRepository(Images)
+      .save(fakeImages({ productId: product1.id, isThumbnail: true }))
+    await db
+      .getRepository(Images)
+      .save(fakeImages({ productId: product1.id, isThumbnail: false }))
+    await db
+      .getRepository(Images)
+      .save(fakeImages({ productId: product1.id, isThumbnail: false }))
+    await db
+      .getRepository(Images)
+      .save(fakeImages({ productId: product1.id, isThumbnail: false }))
+    const found = await findById(product1.id)
+    expect(found?.images).toHaveLength(4)
   })
 })

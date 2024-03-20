@@ -3,11 +3,12 @@ import { authenticatedProcedure } from '@server/trpc/authenticatedProcedure'
 
 export default authenticatedProcedure
   .input(productSchema.shape.id)
-  .mutation(async ({ input: id, ctx: { db } }) => {
+  .query(async ({ input: id, ctx: { db } }) => {
     const productFound = await db.getRepository(Product).findOne({
       where: {
         id,
       },
+      relations: ['images', 'category'],
     })
     return productFound
   })
