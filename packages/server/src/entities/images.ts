@@ -14,15 +14,13 @@ export default class Images {
   @PrimaryGeneratedColumn('increment')
   id: number
 
+  @ManyToOne(() => Product)
+  @JoinColumn({ name: 'productId' })
   @Column('integer')
   productId: number
 
   @Column('boolean')
   isThumbnail: boolean
-
-  @ManyToOne(() => Product, (product) => product.images)
-  @JoinColumn()
-  product: Product
 
   @Column('text')
   link: string

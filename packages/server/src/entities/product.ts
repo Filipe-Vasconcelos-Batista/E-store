@@ -41,7 +41,7 @@ export default class Product {
   @JoinColumn()
   category: Category
 
-  @OneToMany(() => Images, (images) => images.product)
+  @OneToMany(() => Images, (images) => images.productId)
   images: Images[]
 
   @Column('text')

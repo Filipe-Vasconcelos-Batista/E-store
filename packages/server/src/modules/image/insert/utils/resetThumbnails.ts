@@ -1,6 +1,6 @@
 import { Connection } from 'typeorm/browser'
 import { Images } from '@server/entities'
-import { ImagesBare } from '../../../../entities/images'
+import { ImagesBare } from '@server/entities/images'
 
 export default async function resetThumbnail(
   input: ImagesBare,
