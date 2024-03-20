@@ -1,6 +1,6 @@
 import { createTestDatabase } from '@tests/utils/database'
 import { User } from '@server/entities'
-import { fakeUser } from '@server/entities/tests/fakes'
+import { fakeUserBuyer } from '@server/entities/tests/fakes'
 import usersRouter from '..'
 
 const db = await createTestDatabase()
@@ -8,7 +8,7 @@ const userRepository = db.getRepository(User)
 const { signup } = usersRouter.createCaller({ db })
 
 it('should save a user', async () => {
-  const user = fakeUser()
+  const user = fakeUserBuyer()
   const response = await signup(user)
 
   const userCreated = (await userRepository.findOneOrFail({
@@ -72,7 +72,7 @@ it('throws an error for invalid email', async () => {
 })
 
 it('stores lowercased email', async () => {
-  const user = fakeUser()
+  const user = fakeUserBuyer()
   await signup({
     username: 'beatmeup',
     password: 'some-password',
@@ -87,7 +87,7 @@ it('stores lowercased email', async () => {
 })
 
 it('stores email with trimmed whitespace', async () => {
-  const user = fakeUser()
+  const user = fakeUserBuyer()
   await signup({
     username: 'beatmedown',
     password: 'some-password',

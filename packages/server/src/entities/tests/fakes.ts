@@ -1,5 +1,5 @@
 import { CartItemInsert } from '@server/entities/cartItem'
-import { CategoryInsert } from '@server/entities/category'
+import Category from '@server/entities/category'
 import { ImagesInsert } from '@server/entities/images'
 import { OrderInsert } from '@server/entities/order'
 import { ProductInsert } from '@server/entities/product'
@@ -18,9 +18,10 @@ export const fakeCartItem = <T extends Partial<CartItemInsert>>(
   ...overrides,
 })
 
-export const fakeCategory = <T extends Partial<CategoryInsert>>(
+export const fakeCategory = <T extends Partial<Category>>(
   overrides: T = {} as T
 ) => ({
+  id: randomId(),
   title: random.word(),
   ...overrides,
 })
@@ -56,14 +57,24 @@ export const fakeProduct = <T extends Partial<ProductInsert>>(
   ...overrides,
 })
 
-export const fakeUser = <T extends Partial<UserInsert>>(
+export const fakeUserBuyer = <T extends Partial<UserInsert>>(
   overrides: T = {} as T
 ) => ({
   id: randomId(),
   email: random.email(),
   username: random.string(),
   password: random.guid(),
-  authorization: random.pick(['buyer', 'admin']),
+  authorization: 'buyer',
+  ...overrides,
+})
+export const fakeUserAdmin = <T extends Partial<UserInsert>>(
+  overrides: T = {} as T
+) => ({
+  id: randomId(),
+  email: random.email(),
+  username: random.string(),
+  password: random.guid(),
+  authorization: 'admin',
   ...overrides,
 })
 export const fakeCart = <T extends Partial<CartInsert>>(

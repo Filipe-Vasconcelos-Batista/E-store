@@ -14,12 +14,13 @@ export default class Images {
   @PrimaryGeneratedColumn('increment')
   id: number
 
+  @ManyToOne(() => Product)
+  @JoinColumn({ name: 'productId' })
   @Column('integer')
   productId: number
 
-  @ManyToOne(() => Product, (product) => product.images)
-  @JoinColumn()
-  product: Product
+  @Column('boolean')
+  isThumbnail: boolean
 
   @Column('text')
   link: string
@@ -31,8 +32,10 @@ export const imagesSchema = validates<ImagesBare>().with({
   id: z.number().int().positive(),
   productId: z.number().int().positive(),
   link: z.string().url(),
+  isThumbnail: z.boolean(),
 })
 
 export const imagesInsertSchema = imagesSchema.omit({ id: true })
+export const imagesInsertArray = z.array(imagesInsertSchema)
 
 export type ImagesInsert = z.infer<typeof imagesInsertSchema>
