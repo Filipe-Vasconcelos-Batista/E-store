@@ -5,13 +5,15 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
 } from 'typeorm'
 import { validates } from '../utils/validation'
 import Order from './order'
 import Product from './product'
 
+enum OrderStatus {
+  Sold = 'sold',
+  Returned = 'returned',
+}
 @Entity()
 export default class OrderItem {
   @PrimaryGeneratedColumn('increment')
@@ -31,14 +33,11 @@ export default class OrderItem {
   @JoinColumn()
   product: Product
 
-  @Column('integer', { default: 0 })
+  @Column('integer', { default: 1 })
   quantity: number
 
-  @CreateDateColumn()
-  createdAt: Date
-
-  @UpdateDateColumn()
-  updatedAt: Date
+  @Column('enum', { enum: OrderStatus })
+  status: OrderStatus
 }
 
 export type OrderItemBare = Omit<OrderItem, 'order' | 'product'>
@@ -48,14 +47,11 @@ export const orderItemSchema = validates<OrderItemBare>().with({
   orderId: z.number().int().positive(),
   productId: z.number().int().positive(),
   quantity: z.number().int().min(0),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  status: z.nativeEnum(OrderStatus),
 })
 
 export const orderItemInsertSchema = orderItemSchema.omit({
   id: true,
-  createdAt: true,
-  updatedAt: true,
 })
 
 export type OrderItemInsert = z.infer<typeof orderItemInsertSchema>

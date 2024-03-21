@@ -40,7 +40,7 @@ export const fakeOrder = <T extends Partial<OrderInsert>>(
 ) => ({
   userId: randomId(),
   total: random.floating({ min: 0, max: 1000 }),
-  delivered: false,
+  status: 'in preparation',
   ...overrides,
 })
 
