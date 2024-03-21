@@ -4,7 +4,7 @@ import { createTestDatabase } from '@tests/utils/database'
 import { User } from '@server/entities'
 import productRouter from '..'
 
-it('should create a persisted project', async () => {
+it('should create a persisted Category', async () => {
   const db = await createTestDatabase()
   const user = await db.getRepository(User).save(fakeUserAdmin())
   const { create } = productRouter.createCaller(authContext({ db }, user))

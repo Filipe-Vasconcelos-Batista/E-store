@@ -1,16 +1,13 @@
 import { authContext } from '@tests/utils/context'
 import { Category, User } from '@server/entities'
-import { fakeCategory, fakeUserAdmin } from '@server/entities/tests/fakes'
+import { fakeCategory, fakeUserBuyer } from '@server/entities/tests/fakes'
 import { createTestDatabase } from '@tests/utils/database'
 import router from '..'
 
-it('should return a list of projects', async () => {
+it('should return a list of categories', async () => {
   const db = await createTestDatabase()
 
-  // a pair of users and projects to make sure we do not return other users' projects
-  const [user, userOther] = await db
-    .getRepository(User)
-    .save([fakeUserAdmin(), fakeUserAdmin()])
+  const [user] = await db.getRepository(User).save([fakeUserBuyer()])
 
   await db
     .getRepository(Category)
@@ -21,17 +18,7 @@ it('should return a list of projects', async () => {
 
   const { find } = router.createCaller(authContext({ db }, user))
 
-  // When (ACT)
-  const userCategory = await find()
+  const categories = await find()
 
-  // Then (ASSERT)
-  expect(userCategory).toHaveLength(1)
-  expect(userCategory[0]).toMatchObject({
-    id: expect.any(Number),
-    userId: user.id,
-
-    // no relations
-    user: undefined,
-    bugs: undefined,
-  })
+  expect(categories).toHaveLength(2)
 })
