@@ -1,8 +1,8 @@
 import { fakeUserBuyer } from '@server/entities/tests/fakes'
 import { createTestDatabase } from '@tests/utils/database'
 import { Cart, User } from '@server/entities'
-import createCart from './createCart'
-import findCart from './findCartById'
+import createCart from './createOrder'
+import findCart from './findOrderById'
 
 describe('check that we can create a Cart', async () => {
   const db = await createTestDatabase()

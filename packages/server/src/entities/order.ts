@@ -13,7 +13,7 @@ import { validates } from '../utils/validation'
 import User from './user'
 import OrderItem from './orderItems'
 
-enum OrderStatus {
+export enum OrderStatus {
   Waiting = 'waiting',
   InTransit = 'in transit',
   Delivered = 'delivered',

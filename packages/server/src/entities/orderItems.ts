@@ -10,7 +10,7 @@ import { validates } from '../utils/validation'
 import Order from './order'
 import Product from './product'
 
-enum OrderStatus {
+export enum OrderItemStatus {
   Sold = 'sold',
   Returned = 'returned',
 }
@@ -28,7 +28,6 @@ export default class OrderItem {
 
   @Column('integer')
   productId: number
-
   @ManyToOne(() => Product)
   @JoinColumn()
   product: Product
@@ -36,8 +35,8 @@ export default class OrderItem {
   @Column('integer', { default: 1 })
   quantity: number
 
-  @Column('enum', { enum: OrderStatus })
-  status: OrderStatus
+  @Column('enum', { enum: OrderItemStatus })
+  status: OrderItemStatus
 }
 
 export type OrderItemBare = Omit<OrderItem, 'order' | 'product'>
@@ -47,11 +46,12 @@ export const orderItemSchema = validates<OrderItemBare>().with({
   orderId: z.number().int().positive(),
   productId: z.number().int().positive(),
   quantity: z.number().int().min(0),
-  status: z.nativeEnum(OrderStatus),
+  status: z.nativeEnum(OrderItemStatus),
 })
 
 export const orderItemInsertSchema = orderItemSchema.omit({
   id: true,
 })
+export const orderItemArraySchema = z.array(orderItemInsertSchema)
 
 export type OrderItemInsert = z.infer<typeof orderItemInsertSchema>

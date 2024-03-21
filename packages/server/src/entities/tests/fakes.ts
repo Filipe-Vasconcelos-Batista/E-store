@@ -6,6 +6,7 @@ import { ProductInsert } from '@server/entities/product'
 import { UserInsert } from '@server/entities/user'
 import { CartInsert } from '@server/entities/cart'
 import { random } from '@tests/utils/random'
+import { OrderItemInsert, OrderItemStatus } from '../orderItems'
 
 const randomId = () => random.integer({ min: 1, max: 2147483647 })
 
@@ -82,5 +83,15 @@ export const fakeCart = <T extends Partial<CartInsert>>(
   overrides: T = {} as T
 ) => ({
   userId: randomId(),
+  ...overrides,
+})
+
+export const fakeOrderItem = <T extends Partial<OrderItemInsert>>(
+  overrides: T = {} as T
+) => ({
+  orderId: randomId(),
+  productId: randomId(),
+  quantity: 1,
+  status: OrderItemStatus.Sold,
   ...overrides,
 })
