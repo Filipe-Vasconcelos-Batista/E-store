@@ -15,6 +15,7 @@ export const fakeCartItem = <T extends Partial<CartItemInsert>>(
   cartId: randomId(),
   productId: randomId(),
   quantity: random.integer({ min: 1, max: 10 }),
+  complete: random.bool(),
   ...overrides,
 })
 
@@ -81,6 +82,5 @@ export const fakeCart = <T extends Partial<CartInsert>>(
   overrides: T = {} as T
 ) => ({
   userId: randomId(),
-  complete: false,
   ...overrides,
 })

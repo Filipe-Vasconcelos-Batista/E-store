@@ -31,6 +31,9 @@ export default class CartItem {
 
   @Column('integer', { default: 0 })
   quantity: number
+
+  @Column('boolean')
+  complete: boolean
 }
 
 export type CartItemBare = Omit<CartItem, 'cart' | 'product'>
@@ -40,6 +43,7 @@ export const cartItemSchema = validates<CartItemBare>().with({
   cartId: z.number().int().positive(),
   productId: z.number().int().positive(),
   quantity: z.number().int().min(0),
+  complete: z.boolean(),
 })
 
 export const cartItemInsertSchema = cartItemSchema.omit({

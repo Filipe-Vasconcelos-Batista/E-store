@@ -6,7 +6,7 @@ import {
   fakeCartItem,
 } from '@server/entities/tests/fakes'
 import { createTestDatabase } from '@tests/utils/database'
-import { Cart, Category, Product, User } from '@server/entities'
+import { Cart, CartItem, Category, Product, User } from '@server/entities'
 import productRouter from '..'
 
 describe('check that the findAll works', async () => {
@@ -23,11 +23,21 @@ describe('check that the findAll works', async () => {
   await db.getRepository(Cart).save({
     userId: user.id,
   })
-  const { addToCart } = productRouter.createCaller(authContext({ db }, user))
-  it('should add the product to the user Cart', async () => {
+  const { addToCart, deleteFromCart } = productRouter.createCaller(
+    authContext({ db }, user)
+  )
+  it('should delete the product to the user Cart', async () => {
     const found = await addToCart(
       fakeCartItem({ productId: finalProducts[51].id, quantity: 10 })
     )
     expect(found).toBeDefined()
+    await deleteFromCart(found)
+    const lost = await db.getRepository(CartItem).findOne({
+      where: {
+        id: found.id,
+      },
+    })
+
+    expect(lost).toBeNull()
   })
 })

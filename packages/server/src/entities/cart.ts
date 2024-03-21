@@ -25,9 +25,6 @@ export default class Cart {
 
   @OneToMany(() => CartItem, (cartItem) => cartItem.cart)
   cartItems: CartItem[]
-
-  @Column('boolean')
-  complete: boolean
 }
 
 export type CartBare = Omit<Cart, 'user' | 'cartItems'>
@@ -35,7 +32,6 @@ export type CartBare = Omit<Cart, 'user' | 'cartItems'>
 export const cartSchema = validates<CartBare>().with({
   id: z.number().int().positive(),
   userId: z.number().int().positive(),
-  complete: z.boolean(),
 })
 
 export const cartInsertSchema = cartSchema.omit({
