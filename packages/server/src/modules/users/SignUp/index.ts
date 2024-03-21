@@ -4,6 +4,7 @@ import { User } from '@server/entities'
 import config from '@server/config'
 import { userSchema } from '@server/entities/user'
 import { TRPCError } from '@trpc/server'
+import createCart from '@server/modules/cart/utils/createCart'
 
 export default publicProcedure
   .input(
@@ -23,7 +24,7 @@ export default publicProcedure
         password: hash,
         authorization: 'buyer',
       })
-
+      createCart(user.id, db)
       return {
         id: user.id,
         username: user.username,
