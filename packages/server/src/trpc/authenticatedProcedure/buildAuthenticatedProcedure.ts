@@ -46,10 +46,8 @@ export function buildAuthenticatedProcedure(verify: VerifyToken) {
       })
     }
 
-    // if we do not have an authenticated user, we will try to authenticate
     const token = ctx.req.header('Authorization')?.replace('Bearer ', '')
 
-    // if there is no token, we will throw an error
     if (!token) {
       throw new TRPCError({
         code: 'UNAUTHORIZED',
