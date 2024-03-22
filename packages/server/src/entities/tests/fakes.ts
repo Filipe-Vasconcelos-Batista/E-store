@@ -1,11 +1,12 @@
 import { CartItemInsert } from '@server/entities/cartItem'
 import Category from '@server/entities/category'
 import { ImagesInsert } from '@server/entities/images'
-import { OrderInsert } from '@server/entities/order'
+import { OrderInsert, OrderStatus } from '@server/entities/order'
 import { ProductInsert } from '@server/entities/product'
 import { UserInsert } from '@server/entities/user'
 import { CartInsert } from '@server/entities/cart'
 import { random } from '@tests/utils/random'
+import { OrderItemInsert, OrderItemStatus } from '../orderItems'
 
 const randomId = () => random.integer({ min: 1, max: 2147483647 })
 
@@ -40,7 +41,7 @@ export const fakeOrder = <T extends Partial<OrderInsert>>(
 ) => ({
   userId: randomId(),
   total: random.floating({ min: 0, max: 1000 }),
-  delivered: false,
+  status: OrderStatus.Waiting,
   ...overrides,
 })
 
@@ -82,5 +83,15 @@ export const fakeCart = <T extends Partial<CartInsert>>(
   overrides: T = {} as T
 ) => ({
   userId: randomId(),
+  ...overrides,
+})
+
+export const fakeOrderItem = <T extends Partial<OrderItemInsert>>(
+  overrides: T = {} as T
+) => ({
+  orderId: randomId(),
+  productId: randomId(),
+  quantity: 1,
+  status: OrderItemStatus.Sold,
   ...overrides,
 })
