@@ -1,8 +1,8 @@
 import { router } from '@server/trpc'
 import addToOrder from './addToOrder'
-import findOrder from './findOrder'
+import findOrderAdmin from './findOrderAdmin'
 
 export default router({
   addToOrder,
-  findOrder,
+  findOrderAdmin,
 })

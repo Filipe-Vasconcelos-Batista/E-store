@@ -16,17 +16,20 @@ describe('check that we can add Orders', async () => {
   const products = Array.from({ length: 100 }, () =>
     fakeProduct({ categoryId: category.id })
   )
-
   const finalProducts = await Promise.all(
     products.map((product) => db.getRepository(Product).save(product))
   )
 
   const { addToOrder } = productRouter.createCaller(authContext({ db }, user))
-  it('should products and create a new Order', async () => {
+  it('should add products and create a new Order', async () => {
     const found = await addToOrder([
       fakeOrderItem({ productId: finalProducts[51].id }),
       fakeOrderItem({ productId: finalProducts[11].id }),
     ])
     expect(found).toBeDefined()
+    expect(found.items).toHaveLength(2)
+    expect(found.order.total).toEqual(
+      finalProducts[51].price + finalProducts[11].price
+    )
   })
 })

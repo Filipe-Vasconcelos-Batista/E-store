@@ -1,7 +1,7 @@
 import { CartItemInsert } from '@server/entities/cartItem'
 import Category from '@server/entities/category'
 import { ImagesInsert } from '@server/entities/images'
-import { OrderInsert } from '@server/entities/order'
+import { OrderInsert, OrderStatus } from '@server/entities/order'
 import { ProductInsert } from '@server/entities/product'
 import { UserInsert } from '@server/entities/user'
 import { CartInsert } from '@server/entities/cart'
@@ -41,7 +41,7 @@ export const fakeOrder = <T extends Partial<OrderInsert>>(
 ) => ({
   userId: randomId(),
   total: random.floating({ min: 0, max: 1000 }),
-  status: 'in preparation',
+  status: OrderStatus.Waiting,
   ...overrides,
 })
 

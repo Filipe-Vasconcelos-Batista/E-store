@@ -28,6 +28,7 @@ export default class OrderItem {
 
   @Column('integer')
   productId: number
+
   @ManyToOne(() => Product)
   @JoinColumn()
   product: Product
