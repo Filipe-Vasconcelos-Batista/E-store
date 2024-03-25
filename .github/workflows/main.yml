@@ -42,6 +42,7 @@ jobs:
 
       - name: Type check client
         run: npm run typecheck -w=packages/client
+
       - name: create a .env
         run: npm run demo:env
 
