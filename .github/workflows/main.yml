@@ -64,7 +64,7 @@ jobs:
       # makes it run in the background. While it is starting up,
       # we will continue with other steps.
       - name: Start server for E2E tests
-        run: npm run start -w=server &
+        run: npm run start -w=packages/server &
         env:
           # Pass the same database credentials to our server environment variables,
           # just like we would if we had an .env file.
@@ -81,7 +81,7 @@ jobs:
       # differences between dev mode and production mode front
       # end code.
       - name: Build front end for E2E tests
-        run: npm run build -w=client
+        run: npm run build -w=packages/client
         env:
           # Similar to the .env file in your front end.
           VITE_API_ORIGIN: http://localhost:3000
@@ -109,7 +109,7 @@ jobs:
           retry-delay: 5s
 
       - name: Test client E2E
-        run: npm run test:e2e -w=client
+        run: npm run test:e2e -w=packages/client
 
       # Playwright generates a report of the E2E tests. We will
       # upload that report as an artifact so that we can download
