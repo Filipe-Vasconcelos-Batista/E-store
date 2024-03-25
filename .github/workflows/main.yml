@@ -43,9 +43,6 @@ jobs:
       - name: Type check client
         run: npm run typecheck -w=packages/client
 
-      - name: create a .env
-        run: npm run demo:env
-
       # TODO: lint client code and server code
       - name: Backend and FrontEnd Lint check
         run: npm run biglint
