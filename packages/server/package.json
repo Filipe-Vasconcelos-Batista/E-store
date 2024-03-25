@@ -10,7 +10,8 @@
     "dev:mem": "DB_TYPE=pg-mem tsx watch src",
     "test:mem": "DB_TYPE=pg-mem vitest",
     "test:db": "vitest",
-    "lint": "eslint . --ext .ts,.tsx"
+    "lint": "eslint . --ext .ts,.tsx",
+    "typecheck": "tsc --noEmit && echo server Type checking completed without errors"
   },
   "keywords": [],
   "author": "",

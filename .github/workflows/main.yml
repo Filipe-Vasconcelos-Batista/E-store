@@ -38,17 +38,17 @@ jobs:
         run: npm ci
 
       - name: Type check server
-        run: npm run type-check -w=server
+        run: npm run typecheck -w=packages/server
 
       - name: Type check client
-        run: npm run type-check -w=client
+        run: npm run typecheck -w=packages/client
 
       # TODO: lint client code and server code
       - name: Backend and FrontEnd Lint check
         run: npm run biglint
       # TODO: run server tests and client unit tests here. Make sure you are not
       - name: Backend and FrontEnd unit test
-        run: npm run test:unit
+        run: npm run test
       #       running E2E tests here. E2E tests will be run separately.
 
       # Add more browsers here if you want to test on more/different browsers
