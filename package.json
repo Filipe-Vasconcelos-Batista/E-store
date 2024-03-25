@@ -4,7 +4,11 @@
   "description": "E-store Project for Turing College Web-Dev course",
   "main": "index.ts",
   "scripts": {
-    "test": "vitest"
+    "demo": "npm ci && npm run demo:env && npm run demo:launch",
+    "demo:env": "cp packages/client/.env.example packages/client/.env && cp packages/server/.env.example packages/server/.env",
+    "demo:launch": "(cd packages/client && npm run dev) & (cd packages/server && npm run dev:mem)",
+    "test": "(cd packages/client && npm run test) & (cd packages/server && npm run test:mem)",
+    "biglint": "(cd packages/client && npm run lint) & (cd packages/server && npm run lint)"
   },
   "repository": {
     "type": "git",
