@@ -19,8 +19,9 @@ onMounted(async () => {
   loading.value = false;
 
   let canFetch = true; // Flag to control the execution of Store.goFetch()
-  let debounceTimer; // Variable to hold the debounce timer
+  let debounceTimer;
 
+  console.log(debounceTimer);
   document.addEventListener('scroll', async () => {
     const scrollTop = window.scrollY;
     const windowHeight = window.innerHeight;
