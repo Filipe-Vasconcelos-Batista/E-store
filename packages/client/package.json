@@ -1,6 +1,6 @@
 {
   "name": "storefront",
-  "version": "0.0.0",
+  "version": "0.0.5",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,7 +12,8 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "typecheck": "tsc --noEmit && echo client Type checking completed without errors"
   },
   "dependencies": {
     "server":"*",
